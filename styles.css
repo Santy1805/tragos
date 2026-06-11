@@ -597,6 +597,7 @@ img { max-width: 100%; display: block; }
   flex-direction: column;
   flex: 1;
   overflow: hidden;
+  min-height: 0; /* permite que flex-children hagan scroll correctamente */
 }
 
 .checkout-view__body {
@@ -822,6 +823,20 @@ img { max-width: 100%; display: block; }
   .cart-item__qty button {
     width: 36px;
     height: 36px;
+  }
+
+  /* Checkout view: columna vertical, ocupa todo el alto del panel */
+  #checkoutView {
+    display: flex !important;
+    flex-direction: column !important;
+    flex: 1;
+    min-height: 0;
+  }
+
+  .checkout-view__body {
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
   }
 }
 
