@@ -65,59 +65,49 @@
       <button id="closeCart">✕</button>
     </div>
 
-    <!-- VISTA: Lista de productos -->
-    <div id="cartView">
-      <div class="cart-panel__items" id="cartItems">
-        <p class="cart-empty">Tu carrito está vacío.</p>
+    <!-- Items del carrito -->
+    <div class="cart-panel__items" id="cartItems">
+      <p class="cart-empty">Tu carrito está vacío.</p>
+    </div>
+
+    <!-- Formulario de datos -->
+    <div id="checkoutView" class="checkout-view__body" style="padding: 0 24px 12px;">
+      <h4 class="checkout-view__title">Datos del pedido</h4>
+
+      <div class="checkout-field">
+        <label for="clienteName">Nombre completo</label>
+        <input type="text" id="clienteName" placeholder="Ej: Juan Pérez" autocomplete="name" />
       </div>
-      <div class="cart-panel__footer">
-        <div class="cart-total">
-          Total: <strong id="cartTotal">$0</strong>
+
+      <div class="checkout-field">
+        <label for="clienteDir">Domicilio de entrega</label>
+        <input type="text" id="clienteDir" placeholder="Ej: Av. Siempre Viva 742" autocomplete="street-address" />
+      </div>
+
+      <div class="checkout-field">
+        <label>Método de pago</label>
+        <div class="payment-options">
+          <label class="payment-option">
+            <input type="radio" name="payment" value="Efectivo" />
+            <span>💵 Efectivo</span>
+          </label>
+          <label class="payment-option">
+            <input type="radio" name="payment" value="Transferencia" />
+            <span>🏦 Transferencia</span>
+          </label>
+          <label class="payment-option">
+            <input type="radio" name="payment" value="Tarjeta" />
+            <span>💳 Tarjeta</span>
+          </label>
         </div>
-        <button class="btn btn--primary btn--full" id="checkoutBtn">Finalizar compra →</button>
       </div>
     </div>
 
-    <!-- VISTA: Formulario de datos -->
-    <div id="checkoutView" class="checkout-view" style="display:none;">
-      <div class="checkout-view__body">
-        <button class="checkout-back" id="backToCart">← Volver al carrito</button>
-        <h4 class="checkout-view__title">Datos del pedido</h4>
-
-        <div class="checkout-field">
-          <label for="clienteName">Nombre completo</label>
-          <input type="text" id="clienteName" placeholder="Ej: Juan Pérez" autocomplete="name" />
-        </div>
-
-        <div class="checkout-field">
-          <label for="clienteDir">Domicilio de entrega</label>
-          <input type="text" id="clienteDir" placeholder="Ej: Av. Siempre Viva 742" autocomplete="street-address" />
-        </div>
-
-        <div class="checkout-field">
-          <label>Método de pago</label>
-          <div class="payment-options">
-            <label class="payment-option">
-              <input type="radio" name="payment" value="Efectivo" />
-              <span>💵 Efectivo</span>
-            </label>
-            <label class="payment-option">
-              <input type="radio" name="payment" value="Transferencia" />
-              <span>🏦 Transferencia</span>
-            </label>
-            <label class="payment-option">
-              <input type="radio" name="payment" value="Tarjeta" />
-              <span>💳 Tarjeta</span>
-            </label>
-          </div>
-        </div>
+    <div class="cart-panel__footer">
+      <div class="cart-total">
+        Total: <strong id="cartTotal">$0</strong>
       </div>
-      <div class="cart-panel__footer">
-        <div class="cart-total">
-          Total: <strong id="cartTotal2">$0</strong>
-        </div>
-        <button class="btn btn--primary btn--full" id="sendOrderBtn">📲 Enviar por WhatsApp</button>
-      </div>
+      <button class="btn btn--primary btn--full" id="sendOrderBtn">📲 Enviar por WhatsApp</button>
     </div>
 
   </aside>
