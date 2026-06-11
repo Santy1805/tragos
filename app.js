@@ -95,14 +95,40 @@ function crearCardProducto(producto) {
       <p class="product-card__desc">${producto.descripcion}</p>
       <div class="product-card__footer">
         <span class="product-card__price">$${producto.precio.toLocaleString()}</span>
-        <button class="product-card__add" data-id="${producto.id}" aria-label="Agregar ${producto.nombre} al carrito">+</button>
+        <div class="product-card__actions">
+          <div class="product-card__qty-selector">
+            <button class="qty-btn qty-btn--minus" aria-label="Reducir cantidad">−</button>
+            <span class="qty-value">1</span>
+            <button class="qty-btn qty-btn--plus" aria-label="Aumentar cantidad">+</button>
+          </div>
+          <button class="product-card__add" data-id="${producto.id}" aria-label="Agregar ${producto.nombre} al carrito">Agregar</button>
+        </div>
       </div>
     </div>
   `;
 
+  let cantidadSeleccionada = 1;
+  const qtyDisplay = card.querySelector(".qty-value");
+
+  card.querySelector(".qty-btn--minus").addEventListener("click", (e) => {
+    e.stopPropagation();
+    if (cantidadSeleccionada > 1) {
+      cantidadSeleccionada--;
+      qtyDisplay.textContent = cantidadSeleccionada;
+    }
+  });
+
+  card.querySelector(".qty-btn--plus").addEventListener("click", (e) => {
+    e.stopPropagation();
+    cantidadSeleccionada++;
+    qtyDisplay.textContent = cantidadSeleccionada;
+  });
+
   card.querySelector(".product-card__add").addEventListener("click", (e) => {
     e.stopPropagation();
-    agregarAlCarrito(producto.id);
+    agregarAlCarrito(producto.id, cantidadSeleccionada);
+    cantidadSeleccionada = 1;
+    qtyDisplay.textContent = 1;
   });
 
   return card;
@@ -125,15 +151,15 @@ function renderizarProductos(filtro = "all") {
 // =============================================
 // MÓDULO: Carrito
 // =============================================
-function agregarAlCarrito(productoId) {
+function agregarAlCarrito(productoId, cantidad = 1) {
   const producto = PRODUCTOS.find((p) => p.id === productoId);
   if (!producto) return;
 
   const itemExistente = carrito.find((i) => i.id === productoId);
   if (itemExistente) {
-    itemExistente.cantidad += 1;
+    itemExistente.cantidad += cantidad;
   } else {
-    carrito.push({ ...producto, cantidad: 1 });
+    carrito.push({ ...producto, cantidad });
   }
 
   actualizarCarritoUI();
@@ -163,8 +189,6 @@ function actualizarCarritoUI() {
 
   if (carrito.length === 0) {
     itemsContainer.innerHTML = '<p class="cart-empty">Tu carrito está vacío.</p>';
-    // Si estaba en el formulario, volver a la vista del carrito
-    if (typeof volverAlCarrito === "function") volverAlCarrito();
     return;
   }
 
@@ -305,28 +329,12 @@ function inicializarBurbujas() {
 // Número de WhatsApp destino (formato internacional sin + ni espacios)
 const WPP_NUMERO = "5491134903230"; // ← REEMPLAZÁ con tu número real
 
-function mostrarFormulario() {
-  if (carrito.length === 0) {
-    mostrarToast("⚠️ Tu carrito está vacío");
-    return;
-  }
-  document.getElementById("cartView").style.display = "none";
-  document.getElementById("checkoutView").style.display = "flex";
-  // Sincronizar total en la segunda vista
-  const totalPrecio = carrito.reduce((acc, i) => acc + i.precio * i.cantidad, 0);
-  document.getElementById("cartTotal2").textContent = `$${totalPrecio.toLocaleString()}`;
-}
-
-function volverAlCarrito() {
-  document.getElementById("checkoutView").style.display = "none";
-  document.getElementById("cartView").style.display = "flex";
-}
-
 function enviarPedidoPorWpp() {
   const nombre = document.getElementById("clienteName").value.trim();
   const domicilio = document.getElementById("clienteDir").value.trim();
   const pagoInput = document.querySelector('input[name="payment"]:checked');
 
+  if (carrito.length === 0) { mostrarToast("⚠️ Tu carrito está vacío"); return; }
   if (!nombre) { mostrarToast("⚠️ Ingresá tu nombre"); return; }
   if (!domicilio) { mostrarToast("⚠️ Ingresá tu domicilio"); return; }
   if (!pagoInput) { mostrarToast("⚠️ Elegí un método de pago"); return; }
@@ -360,14 +368,11 @@ ${lineasProductos}
   document.getElementById("clienteDir").value = "";
   const checkedRadio = document.querySelector('input[name="payment"]:checked');
   if (checkedRadio) checkedRadio.checked = false;
-  volverAlCarrito();
   cerrarCarrito();
   mostrarToast("✅ ¡Pedido enviado por WhatsApp!");
 }
 
 function inicializarCheckout() {
-  document.getElementById("checkoutBtn").addEventListener("click", mostrarFormulario);
-  document.getElementById("backToCart").addEventListener("click", volverAlCarrito);
   document.getElementById("sendOrderBtn").addEventListener("click", enviarPedidoPorWpp);
 }
 
