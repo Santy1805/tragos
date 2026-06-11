@@ -436,6 +436,7 @@ img { max-width: 100%; display: block; }
   top: 0;
   right: 0;
   height: 100vh;
+  height: 100dvh; /* se adapta al teclado virtual en mobile */
   width: 380px;
   max-width: 100vw;
   background: var(--color-surface);
@@ -754,6 +755,74 @@ img { max-width: 100%; display: block; }
   .nosotros__text p { max-width: 100%; }
 
   .footer__inner { flex-direction: column; text-align: center; }
+
+  /* Carrito ocupa toda la pantalla en mobile */
+  .cart-panel {
+    width: 100vw;
+    border-left: none;
+    border-top: 1px solid var(--color-border);
+    border-radius: 20px 20px 0 0;
+    top: auto;
+    bottom: 0;
+    height: 92dvh;
+    transform: translateY(100%);
+  }
+
+  .cart-panel.open {
+    transform: translateY(0);
+  }
+
+  /* Handle visual en mobile */
+  .cart-panel__header::before {
+    content: '';
+    position: absolute;
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 36px;
+    height: 4px;
+    border-radius: 2px;
+    background: var(--color-border);
+  }
+
+  .cart-panel__header {
+    position: relative;
+    padding-top: 28px;
+  }
+
+  /* Footer del carrito siempre visible, sin que el teclado lo tape */
+  .cart-panel__footer {
+    padding-bottom: max(20px, env(safe-area-inset-bottom));
+    flex-shrink: 0;
+  }
+
+  /* Inputs más grandes para mobile (evita zoom automático de iOS) */
+  .checkout-field input[type="text"] {
+    font-size: 1rem; /* ≥16px evita que iOS haga zoom al enfocar */
+    padding: 14px 16px;
+  }
+
+  /* Opciones de pago más fáciles de tocar */
+  .payment-option {
+    padding: 14px 16px;
+    min-height: 52px;
+  }
+
+  .payment-option input[type="radio"] {
+    width: 20px;
+    height: 20px;
+  }
+
+  /* Botones más altos para touch */
+  .btn {
+    padding: 16px 36px;
+    min-height: 52px;
+  }
+
+  .cart-item__qty button {
+    width: 36px;
+    height: 36px;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
