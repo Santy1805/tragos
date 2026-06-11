@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DRIP — Bebidas Premium</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav class="nav" id="navbar">
+    <div class="nav__logo">NOMBRE DEL LOCAL</div>
+    <ul class="nav__links">
+      <li><a href="#productos">Productos</a></li>
+      <li><a href="#categorias">Categorías</a></li>
+    </ul>
+    
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero" id="home">
+    <canvas class="hero__canvas" id="bubbleCanvas"></canvas>
+    <div class="hero__content">
+      <p class="hero__eyebrow">Nuevas llegadas 2026</p>
+      <h1 class="hero__title">PRECIOS<br/>DE LOCOS</h1>
+      <p class="hero__sub">Bebidas premium seleccionadas para cada momento del día.</p>
+      <a href="#productos" class="btn btn--primary">Ver catálogo</a>
+    </div>
+    <div class="hero__scroll">↓ Deslizá</div>
+  </section>
+
+  <!-- CATEGORÍAS -->
+  <section class="categorias" id="categorias">
+    <div class="container">
+      <h2 class="section-title">Categorías</h2>
+      <div class="categorias__grid">
+        <button class="cat-btn active" data-filter="all">Todas</button>
+        <button class="cat-btn" data-filter="energizante">⚡ Energizantes</button>
+        <button class="cat-btn" data-filter="jugos">🍊 Jugos</button>
+        <button class="cat-btn" data-filter="agua">💧 Aguas</button>
+        <button class="cat-btn" data-filter="gaseosa">🫧 Gaseosas</button>
+        <button class="cat-btn" data-filter="alcohol">🥃 bebidas alcoholicas</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- PRODUCTOS -->
+  <section class="productos" id="productos">
+    <div class="container">
+      <h2 class="section-title">Nuestros productos</h2>
+      <div class="productos__grid" id="productGrid">
+        <!-- JS renderiza las cards aquí -->
+      </div>
+    </div>
+  </section>
+
+  
+
+  
+
+  <!-- TOAST -->
+  <div class="toast" id="toast"></div>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="container footer__inner">
+      <div class="footer__logo">NOMBRE DEL LOCAL</div>
+      <p class="footer__copy">© 2026 NOMBRE DEL LOCAL Bebidas Premium. Todos los derechos reservados.</p>
+      <div class="footer__social">
+        <a href="#">REDES</a>
+        <a href="#">REDES</a>
+        <a href="#">REDES</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
