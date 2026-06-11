@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>DRIP — Bebidas Premium</title>
+  <title>NOMBRE DEL LOCAL — Bebidas Premium</title>
   <link rel="stylesheet" href="styles.css" />
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
 </head>
@@ -16,7 +16,9 @@
       <li><a href="#productos">Productos</a></li>
       <li><a href="#categorias">Categorías</a></li>
     </ul>
-    
+    <button class="nav__cart" id="cartBtn">
+      🛒 <span class="cart-count" id="cartCount">0</span>
+    </button>
   </nav>
 
   <!-- HERO -->
@@ -24,7 +26,7 @@
     <canvas class="hero__canvas" id="bubbleCanvas"></canvas>
     <div class="hero__content">
       <p class="hero__eyebrow">Nuevas llegadas 2026</p>
-      <h1 class="hero__title">PRECIOS<br/>DE LOCOS</h1>
+      <h1 class="hero__title">Hidratación<br/>de otro nivel</h1>
       <p class="hero__sub">Bebidas premium seleccionadas para cada momento del día.</p>
       <a href="#productos" class="btn btn--primary">Ver catálogo</a>
     </div>
@@ -41,7 +43,6 @@
         <button class="cat-btn" data-filter="jugos">🍊 Jugos</button>
         <button class="cat-btn" data-filter="agua">💧 Aguas</button>
         <button class="cat-btn" data-filter="gaseosa">🫧 Gaseosas</button>
-        <button class="cat-btn" data-filter="alcohol">🥃 bebidas alcoholicas</button>
       </div>
     </div>
   </section>
@@ -56,9 +57,71 @@
     </div>
   </section>
 
-  
 
-  
+  <!-- CARRITO LATERAL -->
+  <aside class="cart-panel" id="cartPanel">
+    <div class="cart-panel__header">
+      <h3>Tu pedido</h3>
+      <button id="closeCart">✕</button>
+    </div>
+
+    <!-- VISTA: Lista de productos -->
+    <div id="cartView">
+      <div class="cart-panel__items" id="cartItems">
+        <p class="cart-empty">Tu carrito está vacío.</p>
+      </div>
+      <div class="cart-panel__footer">
+        <div class="cart-total">
+          Total: <strong id="cartTotal">$0</strong>
+        </div>
+        <button class="btn btn--primary btn--full" id="checkoutBtn">Finalizar compra →</button>
+      </div>
+    </div>
+
+    <!-- VISTA: Formulario de datos -->
+    <div id="checkoutView" class="checkout-view" style="display:none;">
+      <div class="checkout-view__body">
+        <button class="checkout-back" id="backToCart">← Volver al carrito</button>
+        <h4 class="checkout-view__title">Datos del pedido</h4>
+
+        <div class="checkout-field">
+          <label for="clienteName">Nombre completo</label>
+          <input type="text" id="clienteName" placeholder="Ej: Juan Pérez" autocomplete="name" />
+        </div>
+
+        <div class="checkout-field">
+          <label for="clienteDir">Domicilio de entrega</label>
+          <input type="text" id="clienteDir" placeholder="Ej: Av. Siempre Viva 742" autocomplete="street-address" />
+        </div>
+
+        <div class="checkout-field">
+          <label>Método de pago</label>
+          <div class="payment-options">
+            <label class="payment-option">
+              <input type="radio" name="payment" value="Efectivo" />
+              <span>💵 Efectivo</span>
+            </label>
+            <label class="payment-option">
+              <input type="radio" name="payment" value="Transferencia" />
+              <span>🏦 Transferencia</span>
+            </label>
+            <label class="payment-option">
+              <input type="radio" name="payment" value="Tarjeta" />
+              <span>💳 Tarjeta</span>
+            </label>
+          </div>
+        </div>
+      </div>
+      <div class="cart-panel__footer">
+        <div class="cart-total">
+          Total: <strong id="cartTotal2">$0</strong>
+        </div>
+        <button class="btn btn--primary btn--full" id="sendOrderBtn">📲 Enviar por WhatsApp</button>
+      </div>
+    </div>
+
+  </aside>
+  <div class="cart-overlay" id="cartOverlay"></div>
 
   <!-- TOAST -->
   <div class="toast" id="toast"></div>
