@@ -163,6 +163,8 @@ function actualizarCarritoUI() {
 
   if (carrito.length === 0) {
     itemsContainer.innerHTML = '<p class="cart-empty">Tu carrito está vacío.</p>';
+    // Si estaba en el formulario, volver a la vista del carrito
+    if (typeof volverAlCarrito === "function") volverAlCarrito();
     return;
   }
 
@@ -297,19 +299,76 @@ function inicializarBurbujas() {
 }
 
 // =============================================
-// MÓDULO: Checkout (simulado)
+// MÓDULO: Checkout con formulario + WhatsApp
 // =============================================
+
+// Número de WhatsApp destino (formato internacional sin + ni espacios)
+const WPP_NUMERO = "5491134903230"; // ← REEMPLAZÁ con tu número real
+
+function mostrarFormulario() {
+  if (carrito.length === 0) {
+    mostrarToast("⚠️ Tu carrito está vacío");
+    return;
+  }
+  document.getElementById("cartView").style.display = "none";
+  document.getElementById("checkoutView").style.display = "flex";
+  // Sincronizar total en la segunda vista
+  const totalPrecio = carrito.reduce((acc, i) => acc + i.precio * i.cantidad, 0);
+  document.getElementById("cartTotal2").textContent = `$${totalPrecio.toLocaleString()}`;
+}
+
+function volverAlCarrito() {
+  document.getElementById("checkoutView").style.display = "none";
+  document.getElementById("cartView").style.display = "flex";
+}
+
+function enviarPedidoPorWpp() {
+  const nombre = document.getElementById("clienteName").value.trim();
+  const domicilio = document.getElementById("clienteDir").value.trim();
+  const pagoInput = document.querySelector('input[name="payment"]:checked');
+
+  if (!nombre) { mostrarToast("⚠️ Ingresá tu nombre"); return; }
+  if (!domicilio) { mostrarToast("⚠️ Ingresá tu domicilio"); return; }
+  if (!pagoInput) { mostrarToast("⚠️ Elegí un método de pago"); return; }
+
+  const pago = pagoInput.value;
+  const totalPrecio = carrito.reduce((acc, i) => acc + i.precio * i.cantidad, 0);
+
+  const lineasProductos = carrito
+    .map(i => `  • ${i.emoji} ${i.nombre} x${i.cantidad} — $${(i.precio * i.cantidad).toLocaleString()}`)
+    .join("\n");
+
+  const mensaje =
+`🛒 *Nuevo pedido NOMBRE DEL LOCAL*
+
+👤 *Cliente:* ${nombre}
+📍 *Domicilio:* ${domicilio}
+💳 *Pago:* ${pago}
+
+*Productos:*
+${lineasProductos}
+
+💰 *Total: $${totalPrecio.toLocaleString()}*`;
+
+  const url = `https://wa.me/${WPP_NUMERO}?text=${encodeURIComponent(mensaje)}`;
+  window.open(url, "_blank");
+
+  // Limpiar estado
+  carrito = [];
+  actualizarCarritoUI();
+  document.getElementById("clienteName").value = "";
+  document.getElementById("clienteDir").value = "";
+  const checkedRadio = document.querySelector('input[name="payment"]:checked');
+  if (checkedRadio) checkedRadio.checked = false;
+  volverAlCarrito();
+  cerrarCarrito();
+  mostrarToast("✅ ¡Pedido enviado por WhatsApp!");
+}
+
 function inicializarCheckout() {
-  document.getElementById("checkoutBtn").addEventListener("click", () => {
-    if (carrito.length === 0) {
-      mostrarToast("⚠️ Tu carrito está vacío");
-      return;
-    }
-    carrito = [];
-    actualizarCarritoUI();
-    cerrarCarrito();
-    mostrarToast("✅ ¡Pedido realizado con éxito!");
-  });
+  document.getElementById("checkoutBtn").addEventListener("click", mostrarFormulario);
+  document.getElementById("backToCart").addEventListener("click", volverAlCarrito);
+  document.getElementById("sendOrderBtn").addEventListener("click", enviarPedidoPorWpp);
 }
 
 // =============================================
